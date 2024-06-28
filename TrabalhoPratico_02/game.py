@@ -1,4 +1,4 @@
-class TicTacToeGame:
+class Game:
     def __init__(self):
         self.board = [' '] * 9
         self.current_player = 'X'
@@ -39,3 +39,6 @@ class TicTacToeGame:
             self.winner = 'Draw'
             return True
         return False
+    
+    def game_over(self):
+        return self.game_over

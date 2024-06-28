@@ -1,6 +1,6 @@
 import pygame
 import sys
-from game import TicTacToeGame
+from game import Game
 from ui import UI
 
 pygame.init()
@@ -10,7 +10,7 @@ def main():
     pygame.display.set_caption("Jogo da Velha")
     clock = pygame.time.Clock()
     
-    game = TicTacToeGame()
+    game = Game()
     ui = UI(screen, game)
 
     while True:

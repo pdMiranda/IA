@@ -3,6 +3,7 @@ import random
 class AI:
     def __init__(self, ai_type):
         self.ai_type = ai_type
+        self.nodes_visited = 0 
 
     def get_move(self, board):
         if self.ai_type == "bfs":
@@ -15,6 +16,8 @@ class AI:
             return self.a_star(board, self.heuristic1)
         elif self.ai_type == "a_star_h2":
             return self.a_star(board, self.heuristic2)
+        
+        return self.nodes_visited
 
     def is_winner(self, board, player):
         combinacoes_vencedoras = [
@@ -40,9 +43,11 @@ class AI:
                     print(f"BFS testando jogada {i} para jogador {jogador}: {novo_tabuleiro}")
                     if self.is_winner(novo_tabuleiro, 'O'):
                         print(f"BFS encontrou jogada vencedora {i}")
+                        self.nodes_visited += 1
                         return i
                     if self.is_winner(novo_tabuleiro, 'X'):
                         print(f"BFS bloqueando jogada do jogador {i}")
+                        self.nodes_visited += 1
                         return i
                     fila.append((novo_tabuleiro, 'X' if jogador == 'O' else 'O'))
         
@@ -61,9 +66,11 @@ class AI:
                     print(f"DFS testando jogada {i} para jogador {jogador}: {novo_tabuleiro}")
                     if self.is_winner(novo_tabuleiro, 'O'):
                         print(f"DFS encontrou jogada vencedora {i}")
+                        self.nodes_visited += 1
                         return i
                     if self.is_winner(novo_tabuleiro, 'X'):
                         print(f"DFS bloqueando jogada do jogador {i}")
+                        self.nodes_visited += 1
                         return i
                     pilha.append((novo_tabuleiro, 'X' if jogador == 'O' else 'O'))
         
@@ -88,6 +95,7 @@ class AI:
                         pontuacao = minimax_recursivo(board, profundidade + 1, False)
                         board[i] = ' '
                         print(f"Minimax (max) testando jogada {i} com score {pontuacao}")
+                        self.nodes_visited += 1
                         melhor_pontuacao = max(pontuacao, melhor_pontuacao)
                 return melhor_pontuacao
             else:
@@ -98,6 +106,7 @@ class AI:
                         pontuacao = minimax_recursivo(board, profundidade + 1, True)
                         board[i] = ' '
                         print(f"Minimax (min) testando jogada {i} com score {pontuacao}")
+                        self.nodes_visited += 1
                         melhor_pontuacao = min(pontuacao, melhor_pontuacao)
                 return melhor_pontuacao
 
@@ -109,11 +118,13 @@ class AI:
                 pontuacao = minimax_recursivo(board, 0, False)
                 board[i] = ' '
                 print(f"Minimax testando jogada {i} com score {pontuacao}")
+                self.nodes_visited += 1
                 if pontuacao > melhor_pontuacao:
                     melhor_pontuacao = pontuacao
                     melhor_jogada = i
 
         print(f"Minimax escolheu a jogada {melhor_jogada} com score {melhor_pontuacao}")
+        self.nodes_visited += 1
         return melhor_jogada
 
     def a_star(self, board, heuristic):
